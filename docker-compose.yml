@@ -6,8 +6,6 @@ services:
       /bin/ash -c "
         echo 'Oh ${MSG}'
       "
-    environment:
-      MSG: ${MSG}
     deploy:
       resources:
         limits:
