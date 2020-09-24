@@ -1,9 +1,9 @@
-# compose-issue
+# Compose Issue
 
-This is a example for issue: compose/issues#123
+This is a example for issue: https://github.com/docker/compose/issues/7790
 
 
-## Issue
+## Problem
 
 To reproduce the problem, follow the steps below:
 
