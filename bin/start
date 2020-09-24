@@ -1,0 +1,64 @@
+#!/bin/bash
+
+DIR="$( cd -P "$( dirname "$0" )" && pwd )"
+
+# Import functions
+. $DIR/_fn
+
+# Go to project root
+cd $DIR
+cd ..
+
+# Vars
+CURR_FOLDER=`pwd`
+BUILD=""
+DAEMON="--abort-on-container-exit"
+SERVICE=""
+COMPOSE="${CURR_FOLDER}/docker-compose.yml"
+
+usage() {
+	cat <<-EOF
+
+  Usage: $0 [-bd] [-s <service>]
+
+  Options:
+    -b   Build image
+    -d   Run containers in the background
+    -s   Docker compose service name
+    -h   Show usage
+
+EOF
+exit 0
+}
+
+while getopts ":bds:" o
+do
+	case ${o} in
+		b) BUILD="--build" ;;
+		d) DAEMON="-d" ;;
+		s) SERVICE=$OPTARG ;;
+		*) usage ;;
+	esac
+done
+
+# Load env
+ENVFILE="${CURR_FOLDER}/.env"
+if test ! -e $ENVFILE; then
+	abort "Environment file not found"
+fi
+
+set -a
+source $ENVFILE
+
+# run compose
+docker-compose \
+	-f $COMPOSE \
+	up \
+	--force-recreate \
+	--always-recreate-deps \
+	--remove-orphans \
+	$BUILD \
+	$DAEMON \
+	$SERVICE
+
+exit 0

@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  example:
+    image: alpine:3.12
+    command: >
+      /bin/ash -c "
+        echo 'Oh ${MSG}'
+      "
+    environment:
+      MSG: ${MSG}
+    deploy:
+      resources:
+        limits:
+          cpus: ${DEPLOY_RESOURCES_LIMITS_CPUS}
+          memory: ${DEPLOY_RESOURCES_LIMITS_MEMORY}
+        reservations:
+          cpus: ${DEPLOY_RESERVATIONS_LIMITS_CPUS}
+          memory: ${DEPLOY_RESERVATIONS_LIMITS_MEMORY}
